@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoTrade Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 🌀 LOADING SCREEN OVERLAY -->
+    <div id="app-loader" class="loader-overlay">
+        <div class="loader-content">
+            <div class="loader-logo">
+                <span class="loader-icon">₿</span>
+                <div class="loader-ring"></div>
+            </div>
+            <h2 class="loader-title">CryptoTrade Pro</h2>
+            <p class="loader-text" id="loader-message">Menghubungkan ke pasar...</p>
+            <div class="loader-progress">
+                <div class="loader-progress-bar" id="loader-progress-fill"></div>
+            </div>
+            <div class="loader-dots">
+                <span></span><span></span><span></span>
+            </div>
+            <p class="loader-tip" id="loader-tip">💡 Tips: Gunakan scroll untuk zoom chart</p>
+        </div>
+    </div>
+
+    <!-- 🔐 AUTH SECTION -->
+    <div id="auth-section" class="section hidden">
+        <div class="auth-container">
+            <!-- Form Login -->
+            <div id="login-form">
+                <div class="auth-header">
+                    <h2>🔐 Crypto Login</h2>
+                    <p>Masuk untuk mulai trading</p>
+                </div>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" placeholder="user@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" placeholder="******" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Masuk</button>
+                </form>
+                <div class="toggle-link">
+                    Belum punya akun? <a onclick="toggleAuth('register')" tabindex="0">Daftar Sekarang</a>
+                </div>
+            </div>
+
+            <!-- Form Register -->
+            <div id="register-form" class="hidden">
+                <div class="auth-header">
+                    <h2>✨ Crypto Register</h2>
+                    <p>Buat akun baru gratis</p>
+                </div>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="register-name">Nama Lengkap</label>
+                        <input type="text" id="register-name" placeholder="Nama Anda" required minlength="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" placeholder="user@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" placeholder="Minimal 6 karakter" required minlength="6">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Daftar</button>
+                </form>
+                <div class="toggle-link">
+                    Sudah punya akun? <a onclick="toggleAuth('login')" tabindex="0">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📦 PRODUCT SELECTION SECTION -->
+    <section id="product-section" class="section hidden">
+        <div class="container">
+            <div class="section-header">
+                <h2>📊 Pilih Aset untuk Trading</h2>
+                <p class="text-muted">Pilih cryptocurrency yang ingin Anda perdagangkan</p>
+            </div>
+            <div class="product-grid" id="product-list"></div>
+            <button id="back-to-products" class="btn btn-secondary hidden" type="button">
+                ← Kembali ke Daftar Produk
+            </button>
+        </div>
+    </section>
+
+    <!-- 📊 DASHBOARD TRADING SECTION -->
+    <div id="dashboard-section" class="hidden">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="nav-left">
+                <button type="button" id="back-to-products-nav" class="btn btn-secondary hidden">
+                    ← Produk
+                </button>
+                <div class="logo">🚀 Crypto<span>Trade</span></div>
+            </div>
+            <div class="user-info">
+                <span id="user-greeting">Halo, Trader!</span>
+                <div class="balance">
+                    <span class="balance-label">Saldo:</span>
+                    $<span id="balance">10000.00</span>
+                </div>
+                <div class="deposit-section">
+                    <input type="number" id="deposit-amount" placeholder="Jumlah deposit" min="1" step="any">
+                    <button type="button" id="deposit-btn" class="btn btn-success">Deposit</button>
+                </div>
+                <button type="button" id="logout-btn" class="btn-logout">Logout</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Chart Area -->
+            <div class="chart-area">
+                <div class="chart-header">
+                    <div>
+                        <h3 id="product-symbol">BTC/USDT</h3>
+                        <small class="text-muted">Real-time Price</small>
+                    </div>
+                    <div class="price-display" id="live-price">$45,230.50</div>
+                </div>
+                <div class="chart-container" id="chart-container">
+                    <canvas id="tradingChart"></canvas>
+                    <div class="timer-indicator">
+                        <span>Candle: <span id="candle-number">0</span></span>
+                    </div>
+                    <div class="zoom-controls">
+                        <button type="button" class="zoom-btn" onclick="zoomOut()">−</button>
+                        <button type="button" class="zoom-btn" onclick="resetZoom()">↺</button>
+                        <button type="button" class="zoom-btn" onclick="zoomIn()">+</button>
+                        <div id="zoom-indicator">
+                            <div class="zoom-bar"><div class="zoom-fill"></div></div>
+                            <span>100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Panel -->
+            <div class="order-panel">
+                <h3 class="panel-title">📝 Buat Order</h3>
+                <div class="input-group">
+                    <label for="amount">Jumlah (<span id="order-symbol">BTC</span>)</label>
+                    <input type="number" id="amount" placeholder="0.00" step="any" min="0" oninput="calculateTotal()">
+                </div>
+                <div class="input-group">
+                    <label for="total">Total (USDT)</label>
+                    <input type="text" id="total" readonly placeholder="0.00">
+                </div>
+                <div id="position-info" class="position-info hidden">
+                    <p><span class="label">Entry Price:</span> <span class="value" id="position-entry">$0.00</span></p>
+                    <p><span class="label">Current P/L:</span> <span class="value" id="position-pl">$0.00</span></p>
+                </div>
+                <div class="trade-buttons">
+                    <button type="button" id="buy-btn" class="btn btn-buy">🟢 BELI</button>
+                    <button type="button" id="sell-btn" class="btn btn-sell">🔴 JUAL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
