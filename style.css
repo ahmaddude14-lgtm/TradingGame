@@ -235,7 +235,6 @@ body {
     padding: 2rem;
     border-radius: var(--radius-lg);
     width: 100%;
-    max-width: 400px;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-color);
 }
@@ -1106,4 +1105,5 @@ a:focus-visible {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
+
 }
