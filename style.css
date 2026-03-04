@@ -2,6 +2,7 @@
    🎨 TRADING APP - COMPLETE CSS
    ================================ */
 /* 🌀 LOADING SCREEN STYLES */
+
 .loader-overlay {
     position: fixed; top: 0; left: 0;
     width: 100vw; height: 100vh;
@@ -105,6 +106,7 @@
     .loader-icon { font-size: 2.6rem; }
     .loader-logo { width: 90px; height: 90px; }
 }
+
 /* ===== CSS VARIABLES (LENGKAP) ===== */
 :root {
     /* Colors */
@@ -164,8 +166,8 @@
 body {
     background-color: var(--bg-dark);
     color: var(--text-light);
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-x: hidden;
     line-height: 1.5;
 }
 
@@ -222,19 +224,30 @@ body {
 
 /* ===== AUTH SECTION ===== */
 #auth-section {
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-card) 100%);
-    padding: 1rem;
+}
+
+.auth-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .auth-container {
+    width: 100%;
+}
+
+.auth-container {
+    position: relative;
+    z-index: 10;
     background-color: var(--bg-card);
     padding: 2rem;
     border-radius: var(--radius-lg);
     width: 100%;
+    max-width: 400px;
     box-shadow: var(--shadow-lg);
     border: 1px solid var(--border-color);
 }
@@ -1105,5 +1118,4 @@ a:focus-visible {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-
 }
